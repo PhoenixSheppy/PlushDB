@@ -1,0 +1,88 @@
+import fs from "fs";
+import path from "path";
+import Database from "better-sqlite3";
+import bcrypt from "bcryptjs";
+
+const dataDir = path.join(process.cwd(), "data");
+const dbPath = path.join(dataDir, "plushdb.sqlite");
+
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+fs.mkdirSync(path.join(dataDir, "uploads"), { recursive: true });
+
+const db = new Database(dbPath);
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS plushies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    species TEXT NOT NULL DEFAULT '',
+    description TEXT NOT NULL DEFAULT '',
+    manufacturer TEXT NOT NULL DEFAULT '',
+    acquired_date TEXT,
+    is_favorite INTEGER NOT NULL DEFAULT 0,
+    has_stickies INTEGER NOT NULL DEFAULT 0,
+    is_imported INTEGER NOT NULL DEFAULT 0,
+    is_travel_buddy INTEGER NOT NULL DEFAULT 0,
+    is_modded INTEGER NOT NULL DEFAULT 0,
+    gender TEXT,
+    image_path TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+`);
+
+const columns = db.prepare("PRAGMA table_info(plushies)").all();
+const columnNames = new Set(columns.map((col) => col.name));
+
+const migrations = {
+  image_path: "ALTER TABLE plushies ADD COLUMN image_path TEXT",
+  has_stickies: "ALTER TABLE plushies ADD COLUMN has_stickies INTEGER NOT NULL DEFAULT 0",
+  is_imported: "ALTER TABLE plushies ADD COLUMN is_imported INTEGER NOT NULL DEFAULT 0",
+  is_travel_buddy: "ALTER TABLE plushies ADD COLUMN is_travel_buddy INTEGER NOT NULL DEFAULT 0",
+  is_modded: "ALTER TABLE plushies ADD COLUMN is_modded INTEGER NOT NULL DEFAULT 0",
+  species: "ALTER TABLE plushies ADD COLUMN species TEXT NOT NULL DEFAULT ''",
+  gender: "ALTER TABLE plushies ADD COLUMN gender TEXT",
+};
+
+for (const [name, sql] of Object.entries(migrations)) {
+  if (!columnNames.has(name)) {
+    db.exec(sql);
+  }
+}
+
+const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get().count;
+
+if (userCount > 0) {
+  console.log("Database already initialized — user account exists.");
+  db.close();
+  process.exit(0);
+}
+
+const username = process.env.ADMIN_USERNAME || "admin";
+const password = process.env.ADMIN_PASSWORD || "plushies";
+const passwordHash = bcrypt.hashSync(password, 12);
+
+db.prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)").run(
+  username,
+  passwordHash
+);
+
+db.close();
+
+console.log("PlushDB initialized!");
+console.log(`  Username: ${username}`);
+if (!process.env.ADMIN_PASSWORD) {
+  console.log(`  Password: ${password} (default — set ADMIN_PASSWORD in production)`);
+}
