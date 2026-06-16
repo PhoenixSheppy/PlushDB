@@ -34,18 +34,33 @@ export function GalleryFooter() {
           </ul>
         </div>
 
-        <p className="shrink-0 text-xs text-text-muted lg:text-right">
-          PlushBroker — A{" "}
+        <div className="flex shrink-0 items-center gap-2 self-end text-sm text-text-muted lg:self-auto">
+          <p>
+            A{" "}
+            <a
+              href="https://phoenixnet-labs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent transition-colors hover:text-accent-hover hover:underline"
+            >
+              PhoenixNet-Labs
+            </a>{" "}
+            Project
+          </p>
           <a
             href="https://phoenixnet-labs.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent transition-colors hover:text-accent-hover hover:underline"
+            aria-label="PhoenixNet Labs"
+            className="size-5 shrink-0 overflow-hidden rounded-sm ring-1 ring-border-subtle transition-opacity hover:opacity-80"
           >
-            PhoenixNet-Labs
-          </a>{" "}
-          Project
-        </p>
+            <img
+              src="https://phoenixnet-labs.com/images/pnet-logo.png"
+              alt=""
+              className="size-full object-cover"
+            />
+          </a>
+        </div>
       </div>
     </footer>
   );
