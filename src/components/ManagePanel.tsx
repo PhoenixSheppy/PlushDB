@@ -122,6 +122,7 @@ export function ManagePanel({ initialPlushies }: Props) {
           onEdit={(p) => {
             setShowForm(false);
             setEditing(p);
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           onDelete={handleDelete}
           onToggleFavorite={handleToggleFavorite}

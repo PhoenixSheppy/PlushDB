@@ -66,7 +66,7 @@ export function PlushieDetailModal({ plushie, onClose }: Props) {
               <img
                 src={`/api/uploads/${plushie.image_path}`}
                 alt={plushie.name}
-                className="max-h-full max-w-full object-contain p-3"
+                className="max-h-full max-w-full rounded-2xl object-contain p-3"
               />
             ) : (
               <span className="text-4xl text-text-muted/40">?</span>

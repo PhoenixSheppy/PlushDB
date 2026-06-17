@@ -166,7 +166,7 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
             <img
               src={previewUrl}
               alt="Preview"
-              className="max-h-full max-w-full object-contain p-1.5"
+              className="max-h-full max-w-full rounded-2xl object-contain p-1.5"
             />
           </div>
         )}

@@ -27,7 +27,7 @@ export function PlushiePhoto({ name, imagePath, isFavorite }: Props) {
           <img
             src={`/api/uploads/${imagePath}`}
             alt={name}
-            className="max-h-full max-w-full object-contain p-1.5"
+            className="max-h-full max-w-full rounded-2xl object-contain p-1.5"
           />
         ) : (
           <span className="text-2xl text-text-muted/40">?</span>
