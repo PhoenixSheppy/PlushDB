@@ -11,27 +11,54 @@ type Props = {
   plushieName: string;
 };
 
+function legacyCopy(text: string): boolean {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textarea);
+  return copied;
+}
+
+function copyLink(url: string): Promise<boolean> {
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(url).then(
+      () => true,
+      () => Promise.resolve(legacyCopy(url))
+    );
+  }
+  return Promise.resolve(legacyCopy(url));
+}
+
 export function PlushieShareButton({ plushieId, plushieName }: Props) {
   const [copied, setCopied] = useState(false);
 
-  async function handleShare() {
-    const url = getPlushieShareUrl(plushieId);
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${plushieName} — PlushBroker`,
-          url,
-        });
-        return;
-      } catch (error) {
-        if (error instanceof Error && error.name === "AbortError") return;
-      }
-    }
-
-    await navigator.clipboard.writeText(url);
+  function showCopied() {
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
+  }
+
+  function handleShare() {
+    const url = getPlushieShareUrl(plushieId);
+    const shareData = { title: `${plushieName} — PlushBroker`, url };
+
+    if (typeof navigator.share === "function" && navigator.canShare?.(shareData)) {
+      navigator.share(shareData).catch((error) => {
+        if (error instanceof Error && error.name === "AbortError") return;
+        void copyLink(url).then((ok) => {
+          if (ok) showCopied();
+        });
+      });
+      return;
+    }
+
+    void copyLink(url).then((ok) => {
+      if (ok) showCopied();
+    });
   }
 
   return (
