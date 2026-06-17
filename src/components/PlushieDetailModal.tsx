@@ -10,6 +10,7 @@ import {
 import { formatDate } from "@/lib/format";
 import type { Plushie } from "@/types";
 import { PlushieGenderIcon } from "./PlushieGenderIcon";
+import { PlushieShareButton } from "./PlushieShareButton";
 import { TraitIcon } from "./TraitIcon";
 import "@/lib/fontawesome";
 
@@ -111,11 +112,14 @@ export function PlushieDetailModal({ plushie, onClose }: Props) {
           <p className="mt-6 text-sm leading-relaxed text-text-muted">{plushie.description}</p>
         )}
 
-        {acquired && (
-          <p className="mt-4 border-t border-border-subtle pt-4 text-xs text-text-muted">
-            Acquired {acquired}
-          </p>
-        )}
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
+          {acquired ? (
+            <span className="text-xs text-text-muted">Acquired {acquired}</span>
+          ) : (
+            <span />
+          )}
+          <PlushieShareButton plushieId={plushie.id} plushieName={plushie.name} />
+        </div>
       </div>
     </div>
   );

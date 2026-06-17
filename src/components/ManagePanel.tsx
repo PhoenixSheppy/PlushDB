@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Plushie } from "@/types";
 import { PlushieForm, type PlushieFormData } from "./PlushieForm";
+import { PlushieDetailModal } from "./PlushieDetailModal";
 import { PlushieGrid } from "./PlushieGrid";
 
 type Props = {
@@ -33,6 +34,7 @@ function buildFormData(data: PlushieFormData, id?: number): FormData {
 export function ManagePanel({ initialPlushies }: Props) {
   const router = useRouter();
   const [plushies, setPlushies] = useState(initialPlushies);
+  const [selected, setSelected] = useState<Plushie | null>(null);
   const [editing, setEditing] = useState<Plushie | null>(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -119,6 +121,7 @@ export function ManagePanel({ initialPlushies }: Props) {
         <PlushieGrid
           plushies={plushies}
           showAdmin
+          onSelect={setSelected}
           onEdit={(p) => {
             setShowForm(false);
             setEditing(p);
@@ -133,6 +136,10 @@ export function ManagePanel({ initialPlushies }: Props) {
             You don&apos;t have any plushies yet, let&apos;s get started! — hit the button above to add your first one!
           </div>
         )
+      )}
+
+      {selected && (
+        <PlushieDetailModal plushie={selected} onClose={() => setSelected(null)} />
       )}
     </div>
   );
