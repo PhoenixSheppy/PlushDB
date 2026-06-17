@@ -6,7 +6,6 @@ import { isAuthenticated } from "@/lib/auth";
 import { FAVORITE_TRAIT } from "@/lib/traits";
 import { PlushieGrid } from "@/components/PlushieGrid";
 import { CollectionStats } from "@/components/CollectionStats";
-import { GalleryFooter } from "@/components/GalleryFooter";
 import "@/lib/fontawesome";
 
 export const dynamic = "force-dynamic";
@@ -22,13 +21,8 @@ export default async function HomePage() {
   const nonFavorites = plushies.filter((p) => !p.is_favorite);
 
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="flex-1 space-y-10">
-      <section className="text-center space-y-4 pt-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-raised px-4 py-1.5 text-sm text-text-muted">
-          <FontAwesomeIcon icon={faPeopleGroup} className="h-4 w-4 text-accent" />
-          <span>Phoenix&apos;s Plushie Collection</span>
-        </div>
+    <div className="space-y-10">
+      <section className="space-y-4 pt-4 text-center">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
           Meet the <span className="text-accent">Pack</span>
         </h1>
@@ -71,10 +65,6 @@ export default async function HomePage() {
           )}
         </section>
       )}
-
-      </div>
-
-      <GalleryFooter />
     </div>
   );
 }

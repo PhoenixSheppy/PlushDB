@@ -48,6 +48,15 @@ export function Header() {
             Gallery
           </Link>
 
+          <Link
+            href="/vendors"
+            className={`rounded-md px-3 py-1.5 transition-colors hover:bg-surface-overlay ${
+              pathname === "/vendors" ? "text-accent" : "text-text-muted hover:text-text"
+            }`}
+          >
+            Vendors
+          </Link>
+
           {session?.isLoggedIn ? (
             <>
               <Link

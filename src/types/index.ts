@@ -40,3 +40,25 @@ export type SessionData = {
   isLoggedIn: boolean;
   username?: string;
 };
+
+export type Vendor = {
+  id: number;
+  name: string;
+  short_description: string;
+  description: string;
+  website_url: string;
+  location: string;
+  logo_path: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type VendorInput = {
+  name: string;
+  short_description?: string;
+  description?: string;
+  website_url?: string;
+  location?: string;
+  logo_path?: string | null;
+  remove_logo?: boolean;
+};

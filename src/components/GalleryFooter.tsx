@@ -1,6 +1,6 @@
 export function GalleryFooter() {
   return (
-    <footer className="mt-auto border-t border-border-subtle pt-8 pb-4">
+    <footer className="border-t border-border-subtle pt-8 pb-4">
       <div className="flex justify-end">
         <div className="flex items-center gap-2 text-sm text-text-muted">
           <p>
