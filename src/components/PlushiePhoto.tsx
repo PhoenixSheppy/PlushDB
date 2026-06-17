@@ -36,11 +36,10 @@ export function PlushiePhoto({ name, imagePath, isFavorite }: Props) {
 
       {isFavorite &&
         RISING_HEARTS.map((heart, i) => (
-          <FontAwesomeIcon
+          <span
             key={i}
-            icon={FAVORITE_TRAIT.iconActive}
             aria-hidden
-            className={`rising-heart pointer-events-none absolute bottom-3 text-accent opacity-0 group-hover:[animation:rise-heart_1.6s_ease-out_infinite] ${heart.size}`}
+            className={`rising-heart pointer-events-none absolute bottom-3 opacity-0 group-hover:[animation:rise-heart_1.6s_ease-out_infinite] ${heart.size}`}
             style={
               {
                 left: heart.left,
@@ -48,7 +47,12 @@ export function PlushiePhoto({ name, imagePath, isFavorite }: Props) {
                 animationDelay: heart.delay,
               } as CSSProperties
             }
-          />
+          >
+            <FontAwesomeIcon
+              icon={FAVORITE_TRAIT.iconActive}
+              className="size-full text-accent"
+            />
+          </span>
         ))}
     </div>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft, faHandHoldingHand } from "@fortawesome/free-solid-svg-icons";
+import { faHandHoldingHand } from "@fortawesome/free-solid-svg-icons";
 import "@/lib/fontawesome";
 
 export function Header() {
