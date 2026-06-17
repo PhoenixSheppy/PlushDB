@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const MAX_TILT = 10;
+const MAX_TILT = 5;
 
 export function TiltCard({ children, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ export function TiltCard({ children, className = "" }: Props) {
     setTilt({
       rotateX: ((centerY - y) / centerY) * MAX_TILT,
       rotateY: ((x - centerX) / centerX) * MAX_TILT,
-      scale: 1.02,
+      scale: 1.008,
     });
     setGlare({
       x: (x / rect.width) * 100,
@@ -58,15 +58,15 @@ export function TiltCard({ children, className = "" }: Props) {
           transform: enabled
             ? `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale3d(${tilt.scale}, ${tilt.scale}, ${tilt.scale})`
             : undefined,
-          transition: isResting ? "transform 0.45s ease-out" : "transform 0.08s ease-out",
+          transition: isResting ? "transform 0.2s ease-out" : "transform 0.04s ease-out",
         }}
       >
         {children}
         {enabled && (
           <div
-            className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300"
+            className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-150"
             style={{
-              opacity: glare.opacity * 0.12,
+              opacity: glare.opacity * 0.08,
               background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(143, 163, 214, 0.45), transparent 55%)`,
             }}
           />

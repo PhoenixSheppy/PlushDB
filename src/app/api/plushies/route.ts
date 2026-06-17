@@ -31,6 +31,7 @@ function parsePlushieFormData(formData: FormData): PlushieInput & { imageFile: F
     is_imported: formData.get("is_imported") === "true",
     is_travel_buddy: formData.get("is_travel_buddy") === "true",
     is_modded: formData.get("is_modded") === "true",
+    is_padded: formData.get("is_padded") === "true",
     gender: parseGender(formData.get("gender")),
     remove_image: formData.get("remove_image") === "true",
     imageFile,

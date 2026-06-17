@@ -36,6 +36,7 @@ db.exec(`
     is_imported INTEGER NOT NULL DEFAULT 0,
     is_travel_buddy INTEGER NOT NULL DEFAULT 0,
     is_modded INTEGER NOT NULL DEFAULT 0,
+    is_padded INTEGER NOT NULL DEFAULT 0,
     gender TEXT,
     image_path TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -52,6 +53,7 @@ const migrations = {
   is_imported: "ALTER TABLE plushies ADD COLUMN is_imported INTEGER NOT NULL DEFAULT 0",
   is_travel_buddy: "ALTER TABLE plushies ADD COLUMN is_travel_buddy INTEGER NOT NULL DEFAULT 0",
   is_modded: "ALTER TABLE plushies ADD COLUMN is_modded INTEGER NOT NULL DEFAULT 0",
+  is_padded: "ALTER TABLE plushies ADD COLUMN is_padded INTEGER NOT NULL DEFAULT 0",
   species: "ALTER TABLE plushies ADD COLUMN species TEXT NOT NULL DEFAULT ''",
   gender: "ALTER TABLE plushies ADD COLUMN gender TEXT",
 };

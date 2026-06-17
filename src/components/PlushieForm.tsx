@@ -18,6 +18,7 @@ export type PlushieFormData = {
   is_imported: boolean;
   is_travel_buddy: boolean;
   is_modded: boolean;
+  is_padded: boolean;
   gender: PlushieGender;
   image: File | null;
   remove_image: boolean;
@@ -31,6 +32,7 @@ function initialTraits(plushie?: Plushie | null): Record<BooleanTraitKey, boolea
     is_imported: plushie?.is_imported ?? false,
     is_travel_buddy: plushie?.is_travel_buddy ?? false,
     is_modded: plushie?.is_modded ?? false,
+    is_padded: plushie?.is_padded ?? false,
   };
 }
 
@@ -103,6 +105,7 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
         is_imported: traits.is_imported,
         is_travel_buddy: traits.is_travel_buddy,
         is_modded: traits.is_modded,
+        is_padded: traits.is_padded,
         gender,
         image,
         remove_image: removeImage,

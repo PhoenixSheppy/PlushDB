@@ -12,6 +12,7 @@ export type Plushie = {
   is_imported: boolean;
   is_travel_buddy: boolean;
   is_modded: boolean;
+  is_padded: boolean;
   gender: PlushieGender;
   image_path: string | null;
   created_at: string;
@@ -29,6 +30,7 @@ export type PlushieInput = {
   is_imported?: boolean;
   is_travel_buddy?: boolean;
   is_modded?: boolean;
+  is_padded?: boolean;
   gender?: PlushieGender;
   image_path?: string | null;
   remove_image?: boolean;

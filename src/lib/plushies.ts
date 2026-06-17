@@ -14,6 +14,7 @@ type PlushieRow = {
   is_imported: number;
   is_travel_buddy: number;
   is_modded: number;
+  is_padded: number;
   gender: string | null;
   image_path: string | null;
   created_at: string;
@@ -30,6 +31,7 @@ function rowToPlushie(row: PlushieRow): Plushie {
     is_imported: row.is_imported === 1,
     is_travel_buddy: row.is_travel_buddy === 1,
     is_modded: row.is_modded === 1,
+    is_padded: row.is_padded === 1,
     gender,
     image_path: row.image_path ?? null,
   };
@@ -54,8 +56,8 @@ export function createPlushie(input: PlushieInput): Plushie {
   const db = getDb();
   const result = db
     .prepare(
-      `INSERT INTO plushies (name, species, description, manufacturer, acquired_date, is_favorite, has_stickies, is_imported, is_travel_buddy, is_modded, gender, image_path, updated_at)
-       VALUES (@name, @species, @description, @manufacturer, @acquired_date, @is_favorite, @has_stickies, @is_imported, @is_travel_buddy, @is_modded, @gender, @image_path, datetime('now'))`
+      `INSERT INTO plushies (name, species, description, manufacturer, acquired_date, is_favorite, has_stickies, is_imported, is_travel_buddy, is_modded, is_padded, gender, image_path, updated_at)
+       VALUES (@name, @species, @description, @manufacturer, @acquired_date, @is_favorite, @has_stickies, @is_imported, @is_travel_buddy, @is_modded, @is_padded, @gender, @image_path, datetime('now'))`
     )
     .run({
       name: input.name.trim(),
@@ -68,6 +70,7 @@ export function createPlushie(input: PlushieInput): Plushie {
       is_imported: input.is_imported ? 1 : 0,
       is_travel_buddy: input.is_travel_buddy ? 1 : 0,
       is_modded: input.is_modded ? 1 : 0,
+      is_padded: input.is_padded ? 1 : 0,
       gender: input.gender ?? null,
       image_path: input.image_path ?? null,
     });
@@ -105,6 +108,7 @@ export function updatePlushie(id: number, input: PlushieInput): Plushie | null {
            is_imported = @is_imported,
            is_travel_buddy = @is_travel_buddy,
            is_modded = @is_modded,
+           is_padded = @is_padded,
            gender = @gender,
            image_path = @image_path,
            updated_at = datetime('now')
@@ -122,6 +126,7 @@ export function updatePlushie(id: number, input: PlushieInput): Plushie | null {
       is_imported: input.is_imported ? 1 : 0,
       is_travel_buddy: input.is_travel_buddy ? 1 : 0,
       is_modded: input.is_modded ? 1 : 0,
+      is_padded: input.is_padded ? 1 : 0,
       gender: input.gender ?? null,
       image_path: imagePath,
     });

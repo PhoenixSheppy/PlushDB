@@ -22,6 +22,7 @@ function buildFormData(data: PlushieFormData, id?: number): FormData {
   formData.set("is_imported", String(data.is_imported));
   formData.set("is_travel_buddy", String(data.is_travel_buddy));
   formData.set("is_modded", String(data.is_modded));
+  formData.set("is_padded", String(data.is_padded));
   formData.set("gender", data.gender ?? "");
   formData.set("remove_image", String(data.remove_image));
   if (data.image) formData.set("image", data.image);

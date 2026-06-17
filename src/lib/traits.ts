@@ -1,5 +1,6 @@
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
+  faBaby,
   faDroplet,
   faGenderless,
   faGlobe,
@@ -23,6 +24,7 @@ export const BOOLEAN_TRAITS = [
   { key: "is_travel_buddy" as const, icon: faPlane, label: "Travel Buddy" },
   { key: "has_stickies" as const, icon: faDroplet, label: "Well Loved" },
   { key: "is_modded" as const, icon: faStarOfLife, label: "Modded" },
+  { key: "is_padded" as const, icon: faBaby, label: "Padded" },
 ];
 
 export const GENDER_TRAITS = {
