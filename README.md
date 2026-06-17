@@ -1,12 +1,16 @@
 # PlushDB
 
-A cozy dark-mode catalog for your plushie collection. Built with Next.js, Tailwind CSS, TypeScript, and SQLite — no containers required.
+A cozy catalog for your plushie collection. Built with Next.js, Tailwind CSS, TypeScript, and SQLite.
 
 ## Features
 
-- **Public gallery** — share your collection with friends
-- **Manage panel** — add, edit, and delete plushies (login required)
-- **Plushie fields** — name, photo, description, manufacturer, date acquired, and a favorite heart
+- **Public gallery** — browse the collection with favorites highlighted, collection stats, and detail modals for each plushie
+- **Vendor directory** — showcase trusted shops and makers on a dedicated `/vendors` page
+- **Share links** — share any plushie via a direct URL; native share on mobile, copy-to-clipboard on desktop
+- **Manage panel** — add, edit, and delete plushies and vendors (login required)
+- **Plushie fields** — name, photo, species, description, manufacturer, date acquired, gender, and trait badges (favorite, imported, travel buddy, well loved, modded, padded)
+- **Vendor fields** — name, logo, short description, full description, website, and location
+- **Mobile-friendly** — responsive layout with compact icon navigation in the header
 - **Dark mode** — easy on the eyes, always on
 - **SQLite** — lightweight file-based database stored in `data/`
 
