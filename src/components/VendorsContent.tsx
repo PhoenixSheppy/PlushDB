@@ -39,7 +39,7 @@ export function VendorsContent({ vendors }: Props) {
               <span className="text-accent">Modders</span>
             </h2>
             <p className="mx-auto max-w-lg text-sm text-text-muted">
-              Independent modders I've worked with in the past that I can recommend.
+              Independent modders I&apos;ve worked with in the past that I can recommend.
             </p>
           </div>
 
