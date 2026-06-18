@@ -4,12 +4,14 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import {
-  BOOLEAN_TRAITS,
   FAVORITE_TRAIT,
+  getVisibleBooleanTraits,
 } from "@/lib/traits";
+import { useMatureContent } from "@/components/MatureContentProvider";
 import { formatDate } from "@/lib/format";
 import type { Plushie } from "@/types";
 import { PlushieGenderIcon } from "./PlushieGenderIcon";
+import { PlushieMatureDescription } from "./PlushieMatureDescription";
 import { PlushieShareButton } from "./PlushieShareButton";
 import { TraitIcon } from "./TraitIcon";
 import "@/lib/fontawesome";
@@ -17,9 +19,12 @@ import "@/lib/fontawesome";
 type Props = {
   plushie: Plushie;
   onClose: () => void;
+  showAdmin?: boolean;
 };
 
-export function PlushieDetailModal({ plushie, onClose }: Props) {
+export function PlushieDetailModal({ plushie, onClose, showAdmin }: Props) {
+  const { matureEnabled } = useMatureContent();
+  const visibleTraits = getVisibleBooleanTraits(matureEnabled);
   const acquired = formatDate(plushie.acquired_date);
   const favoriteIcon = plushie.is_favorite
     ? FAVORITE_TRAIT.iconActive
@@ -96,7 +101,7 @@ export function PlushieDetailModal({ plushie, onClose }: Props) {
                 label={FAVORITE_TRAIT.label}
                 active={plushie.is_favorite}
               />
-              {BOOLEAN_TRAITS.map((trait) => (
+              {visibleTraits.map((trait) => (
                 <TraitLegendItem
                   key={trait.key}
                   icon={trait.icon}
@@ -111,6 +116,12 @@ export function PlushieDetailModal({ plushie, onClose }: Props) {
         {plushie.description && (
           <p className="mt-6 text-sm leading-relaxed text-text-muted">{plushie.description}</p>
         )}
+
+        <PlushieMatureDescription
+          text={plushie.mature_description}
+          showAdmin={showAdmin}
+          className="mt-4"
+        />
 
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
           {acquired ? (

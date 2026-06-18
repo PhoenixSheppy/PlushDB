@@ -16,6 +16,7 @@ function buildFormData(data: PlushieFormData, id?: number): FormData {
   formData.set("name", data.name);
   formData.set("species", data.species);
   formData.set("description", data.description);
+  formData.set("mature_description", data.mature_description);
   formData.set("manufacturer", data.manufacturer);
   formData.set("acquired_date", data.acquired_date ?? "");
   formData.set("is_favorite", String(data.is_favorite));
@@ -139,7 +140,11 @@ export function ManagePanel({ initialPlushies }: Props) {
       )}
 
       {selected && (
-        <PlushieDetailModal plushie={selected} onClose={() => setSelected(null)} />
+        <PlushieDetailModal
+          plushie={selected}
+          showAdmin
+          onClose={() => setSelected(null)}
+        />
       )}
     </div>
   );

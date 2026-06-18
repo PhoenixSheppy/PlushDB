@@ -27,6 +27,27 @@ export const BOOLEAN_TRAITS = [
   { key: "is_padded" as const, icon: faBaby, label: "Padded" },
 ];
 
+export type PlushieBooleanTraitKey = (typeof BOOLEAN_TRAITS)[number]["key"];
+
+export const MATURE_TRAIT_KEYS = new Set<PlushieBooleanTraitKey>([
+  "has_stickies",
+  "is_modded",
+  "is_padded",
+]);
+
+export function getVisibleBooleanTraits(matureEnabled: boolean) {
+  if (matureEnabled) return BOOLEAN_TRAITS;
+  return BOOLEAN_TRAITS.filter((trait) => !MATURE_TRAIT_KEYS.has(trait.key));
+}
+
+export function getPublicBooleanTraits() {
+  return BOOLEAN_TRAITS.filter((trait) => !MATURE_TRAIT_KEYS.has(trait.key));
+}
+
+export function getMatureBooleanTraits() {
+  return BOOLEAN_TRAITS.filter((trait) => MATURE_TRAIT_KEYS.has(trait.key));
+}
+
 export const GENDER_TRAITS = {
   male: { icon: faMars, label: "Male" },
   female: { icon: faVenus, label: "Female" },

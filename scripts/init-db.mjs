@@ -29,6 +29,7 @@ db.exec(`
     name TEXT NOT NULL,
     species TEXT NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
+    mature_description TEXT NOT NULL DEFAULT '',
     manufacturer TEXT NOT NULL DEFAULT '',
     acquired_date TEXT,
     is_favorite INTEGER NOT NULL DEFAULT 0,
@@ -68,6 +69,7 @@ const migrations = {
   is_padded: "ALTER TABLE plushies ADD COLUMN is_padded INTEGER NOT NULL DEFAULT 0",
   species: "ALTER TABLE plushies ADD COLUMN species TEXT NOT NULL DEFAULT ''",
   gender: "ALTER TABLE plushies ADD COLUMN gender TEXT",
+  mature_description: "ALTER TABLE plushies ADD COLUMN mature_description TEXT NOT NULL DEFAULT ''",
 };
 
 for (const [name, sql] of Object.entries(migrations)) {

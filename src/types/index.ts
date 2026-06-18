@@ -5,6 +5,7 @@ export type Plushie = {
   name: string;
   species: string;
   description: string;
+  mature_description: string;
   manufacturer: string;
   acquired_date: string | null;
   is_favorite: boolean;
@@ -22,6 +23,7 @@ export type Plushie = {
 export type PlushieInput = {
   name: string;
   description?: string;
+  mature_description?: string;
   species?: string;
   manufacturer?: string;
   acquired_date?: string | null;

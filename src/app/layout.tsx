@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { GalleryFooter } from "@/components/GalleryFooter";
 import { Header } from "@/components/Header";
+import { MatureContentProvider } from "@/components/MatureContentProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,11 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.variable} flex min-h-screen flex-col font-sans`}>
-        <Header />
-        <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6">
-          <div className="flex flex-1 flex-col">{children}</div>
-          <GalleryFooter />
-        </main>
+        <MatureContentProvider>
+          <Header />
+          <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6">
+            <div className="flex flex-1 flex-col">{children}</div>
+            <GalleryFooter />
+          </main>
+        </MatureContentProvider>
       </body>
     </html>
   );

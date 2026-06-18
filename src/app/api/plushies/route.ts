@@ -24,6 +24,7 @@ function parsePlushieFormData(formData: FormData): PlushieInput & { imageFile: F
     name: String(formData.get("name") ?? ""),
     species: String(formData.get("species") ?? ""),
     description: String(formData.get("description") ?? ""),
+    mature_description: String(formData.get("mature_description") ?? ""),
     manufacturer: String(formData.get("manufacturer") ?? ""),
     acquired_date: String(formData.get("acquired_date") ?? "") || null,
     is_favorite: formData.get("is_favorite") === "true",

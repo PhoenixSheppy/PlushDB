@@ -2,6 +2,7 @@ import type { MouseEvent } from "react";
 import type { Plushie } from "@/types";
 import { formatDate } from "@/lib/format";
 import { PlushieGenderIcon } from "./PlushieGenderIcon";
+import { PlushieMatureDescription } from "./PlushieMatureDescription";
 import { PlushiePhoto } from "./PlushiePhoto";
 import { PlushieTraitRow } from "./PlushieTraits";
 import { TiltCard } from "./TiltCard";
@@ -69,6 +70,12 @@ export function PlushieCard({
       {plushie.description && (
         <p className="mt-3 text-sm leading-relaxed text-text-muted">{plushie.description}</p>
       )}
+
+      <PlushieMatureDescription
+        text={plushie.mature_description}
+        showAdmin={showAdmin}
+        className="mt-3"
+      />
 
       <div className="mt-4 flex items-center justify-between gap-2 border-t border-border-subtle pt-3">
         {acquired ? (

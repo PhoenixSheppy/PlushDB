@@ -7,6 +7,7 @@ type PlushieRow = {
   name: string;
   species: string;
   description: string;
+  mature_description: string;
   manufacturer: string;
   acquired_date: string | null;
   is_favorite: number;
@@ -56,13 +57,14 @@ export function createPlushie(input: PlushieInput): Plushie {
   const db = getDb();
   const result = db
     .prepare(
-      `INSERT INTO plushies (name, species, description, manufacturer, acquired_date, is_favorite, has_stickies, is_imported, is_travel_buddy, is_modded, is_padded, gender, image_path, updated_at)
-       VALUES (@name, @species, @description, @manufacturer, @acquired_date, @is_favorite, @has_stickies, @is_imported, @is_travel_buddy, @is_modded, @is_padded, @gender, @image_path, datetime('now'))`
+      `INSERT INTO plushies (name, species, description, mature_description, manufacturer, acquired_date, is_favorite, has_stickies, is_imported, is_travel_buddy, is_modded, is_padded, gender, image_path, updated_at)
+       VALUES (@name, @species, @description, @mature_description, @manufacturer, @acquired_date, @is_favorite, @has_stickies, @is_imported, @is_travel_buddy, @is_modded, @is_padded, @gender, @image_path, datetime('now'))`
     )
     .run({
       name: input.name.trim(),
       species: input.species?.trim() ?? "",
       description: input.description?.trim() ?? "",
+      mature_description: input.mature_description?.trim() ?? "",
       manufacturer: input.manufacturer?.trim() ?? "",
       acquired_date: input.acquired_date || null,
       is_favorite: input.is_favorite ? 1 : 0,
@@ -101,6 +103,7 @@ export function updatePlushie(id: number, input: PlushieInput): Plushie | null {
        SET name = @name,
            species = @species,
            description = @description,
+           mature_description = @mature_description,
            manufacturer = @manufacturer,
            acquired_date = @acquired_date,
            is_favorite = @is_favorite,
@@ -119,6 +122,7 @@ export function updatePlushie(id: number, input: PlushieInput): Plushie | null {
       name: input.name.trim(),
       species: input.species?.trim() ?? "",
       description: input.description?.trim() ?? "",
+      mature_description: input.mature_description?.trim() ?? "",
       manufacturer: input.manufacturer?.trim() ?? "",
       acquired_date: input.acquired_date || null,
       is_favorite: input.is_favorite ? 1 : 0,

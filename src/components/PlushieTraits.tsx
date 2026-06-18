@@ -1,7 +1,8 @@
 "use client";
 
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { BOOLEAN_TRAITS, FAVORITE_TRAIT } from "@/lib/traits";
+import { BOOLEAN_TRAITS, FAVORITE_TRAIT, getVisibleBooleanTraits } from "@/lib/traits";
+import { useMatureContent } from "@/components/MatureContentProvider";
 import type { Plushie } from "@/types";
 import { TraitIcon } from "./TraitIcon";
 
@@ -57,6 +58,8 @@ type Props = {
 };
 
 export function PlushieTraitRow({ plushie, showAdmin, onToggleFavorite }: Props) {
+  const { matureEnabled } = useMatureContent();
+  const visibleTraits = showAdmin ? BOOLEAN_TRAITS : getVisibleBooleanTraits(matureEnabled);
   const favoriteIcon: IconDefinition = plushie.is_favorite
     ? FAVORITE_TRAIT.iconActive
     : FAVORITE_TRAIT.iconInactive;
@@ -77,7 +80,7 @@ export function PlushieTraitRow({ plushie, showAdmin, onToggleFavorite }: Props)
           <TraitIcon icon={favoriteIcon} active={plushie.is_favorite} />
         </TraitItem>
 
-        {BOOLEAN_TRAITS.map((trait) => (
+        {visibleTraits.map((trait) => (
           <TraitItem
             key={trait.key}
             label={trait.label}

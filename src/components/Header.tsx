@@ -1,18 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
-  faArrowRightToBracket,
   faGear,
   faHandHoldingHand,
-  faRightFromBracket,
   faStore,
   faTableCells,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAuthSession } from "@/lib/use-auth-session";
 import "@/lib/fontawesome";
 
 type NavItemProps = {
@@ -37,24 +35,7 @@ function NavItem({ href, label, icon, active }: NavItemProps) {
 
 export function Header() {
   const pathname = usePathname();
-  const router = useRouter();
-  const [session, setSession] = useState<{ isLoggedIn: boolean; username: string | null } | null>(
-    null
-  );
-
-  useEffect(() => {
-    fetch("/api/auth/session")
-      .then((r) => r.json())
-      .then(setSession)
-      .catch(() => setSession({ isLoggedIn: false, username: null }));
-  }, [pathname]);
-
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setSession({ isLoggedIn: false, username: null });
-    router.push("/");
-    router.refresh();
-  }
+  const session = useAuthSession();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-subtle bg-surface/90 backdrop-blur-md">
@@ -80,32 +61,12 @@ export function Header() {
             active={pathname === "/vendors"}
           />
 
-          {session?.isLoggedIn ? (
-            <>
-              <NavItem
-                href="/manage"
-                label="Manage"
-                icon={faGear}
-                active={pathname === "/manage"}
-              />
-              <span className="hidden text-text-muted md:inline">{session.username}</span>
-              <button
-                type="button"
-                onClick={handleLogout}
-                aria-label="Log out"
-                title="Log out"
-                className="inline-flex items-center rounded-md border border-border px-2 py-1.5 text-text-muted transition-colors hover:border-border hover:bg-surface-overlay hover:text-text sm:gap-2 sm:px-3"
-              >
-                <FontAwesomeIcon icon={faRightFromBracket} className="h-4 w-4" />
-                <span className="hidden sm:inline">Log out</span>
-              </button>
-            </>
-          ) : (
+          {session?.isLoggedIn && (
             <NavItem
-              href="/login"
-              label="Log in"
-              icon={faArrowRightToBracket}
-              active={pathname === "/login"}
+              href="/manage"
+              label="Manage"
+              icon={faGear}
+              active={pathname === "/manage"}
             />
           )}
         </nav>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import type { Plushie, PlushieGender } from "@/types";
-import { BOOLEAN_TRAITS, FAVORITE_TRAIT, GENDER_TRAITS } from "@/lib/traits";
+import { BOOLEAN_TRAITS, FAVORITE_TRAIT, GENDER_TRAITS, getMatureBooleanTraits, getPublicBooleanTraits } from "@/lib/traits";
 import { TraitIcon } from "./TraitIcon";
 import "@/lib/fontawesome";
 
@@ -11,6 +11,7 @@ export type PlushieFormData = {
   name: string;
   species: string;
   description: string;
+  mature_description: string;
   manufacturer: string;
   acquired_date: string | null;
   is_favorite: boolean;
@@ -46,6 +47,7 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
   const [name, setName] = useState(plushie?.name ?? "");
   const [species, setSpecies] = useState(plushie?.species ?? "");
   const [description, setDescription] = useState(plushie?.description ?? "");
+  const [matureDescription, setMatureDescription] = useState(plushie?.mature_description ?? "");
   const [manufacturer, setManufacturer] = useState(plushie?.manufacturer ?? "");
   const [acquiredDate, setAcquiredDate] = useState(plushie?.acquired_date ?? "");
   const [isFavorite, setIsFavorite] = useState(plushie?.is_favorite ?? false);
@@ -98,6 +100,7 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
         name: name.trim(),
         species: species.trim(),
         description: description.trim(),
+        mature_description: matureDescription.trim(),
         manufacturer: manufacturer.trim(),
         acquired_date: acquiredDate || null,
         is_favorite: isFavorite,
@@ -119,6 +122,9 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
 
   const inputClass =
     "w-full rounded-lg border border-border bg-surface-overlay px-4 py-2.5 text-text placeholder:text-text-muted/50 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
+
+  const publicTraits = getPublicBooleanTraits();
+  const matureTraits = getMatureBooleanTraits();
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -241,7 +247,7 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
             icon={isFavorite ? FAVORITE_TRAIT.iconActive : FAVORITE_TRAIT.iconInactive}
             label="Favorite"
           />
-          {BOOLEAN_TRAITS.map((trait) => (
+          {publicTraits.map((trait) => (
             <TraitToggle
               key={trait.key}
               active={traits[trait.key]}
@@ -262,6 +268,44 @@ export function PlushieForm({ plushie, onSubmit, onCancel }: Props) {
               onClick={() => setGender((current) => (current === g ? null : g))}
               icon={GENDER_TRAITS[g].icon}
               label={GENDER_TRAITS[g].label}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4 rounded-xl border border-border-subtle bg-surface-overlay/30 p-4">
+        <div>
+          <p className="text-sm font-medium text-text-muted">Mature content</p>
+          <p className="mt-1 text-xs leading-relaxed text-text-muted">
+            These fields and traits are only shown to visitors who enable mature content in the
+            footer.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="mature_description" className="block text-sm font-medium text-text-muted">
+            Mature description
+          </label>
+          <textarea
+            id="mature_description"
+            value={matureDescription}
+            onChange={(e) => setMatureDescription(e.target.value)}
+            rows={3}
+            className={`${inputClass} resize-none`}
+            placeholder="Optional note for mature audiences…"
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {matureTraits.map((trait) => (
+            <TraitToggle
+              key={trait.key}
+              active={traits[trait.key]}
+              onClick={() =>
+                setTraits((current) => ({ ...current, [trait.key]: !current[trait.key] }))
+              }
+              icon={trait.icon}
+              label={trait.label}
             />
           ))}
         </div>
