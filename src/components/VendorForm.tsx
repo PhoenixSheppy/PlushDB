@@ -9,6 +9,7 @@ export type VendorFormData = {
   description: string;
   website_url: string;
   location: string;
+  is_mature: boolean;
   logo: File | null;
   remove_logo: boolean;
 };
@@ -25,6 +26,7 @@ export function VendorForm({ vendor, onSubmit, onCancel }: Props) {
   const [description, setDescription] = useState(vendor?.description ?? "");
   const [websiteUrl, setWebsiteUrl] = useState(vendor?.website_url ?? "");
   const [location, setLocation] = useState(vendor?.location ?? "");
+  const [isMature, setIsMature] = useState(vendor?.is_mature ?? false);
   const [logo, setLogo] = useState<File | null>(null);
   const [removeLogo, setRemoveLogo] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
@@ -74,6 +76,7 @@ export function VendorForm({ vendor, onSubmit, onCancel }: Props) {
         description: description.trim(),
         website_url: websiteUrl.trim(),
         location: location.trim(),
+        is_mature: isMature,
         logo,
         remove_logo: removeLogo,
       });
@@ -162,6 +165,26 @@ export function VendorForm({ vendor, onSubmit, onCancel }: Props) {
           rows={4}
           className={inputClass}
         />
+      </div>
+
+      <div className="space-y-4 rounded-xl border border-border-subtle bg-surface-overlay/30 p-4">
+        <div>
+          <p className="text-sm font-medium text-text-muted">Mature content</p>
+          <p className="mt-1 text-xs leading-relaxed text-text-muted">
+            Modders are only shown on the public vendors page when visitors enable mature content
+            in the footer.
+          </p>
+        </div>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={isMature}
+            onChange={(e) => setIsMature(e.target.checked)}
+            className="size-4 rounded border-border bg-surface-overlay text-accent focus:ring-accent"
+          />
+          <span className="text-sm text-text-muted">Modder</span>
+        </label>
       </div>
 
       <div className="space-y-2">

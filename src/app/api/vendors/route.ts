@@ -19,6 +19,7 @@ function parseVendorFormData(formData: FormData): VendorInput & { logoFile: File
     description: String(formData.get("description") ?? ""),
     website_url: String(formData.get("website_url") ?? ""),
     location: String(formData.get("location") ?? ""),
+    is_mature: formData.get("is_mature") === "true",
     remove_logo: formData.get("remove_logo") === "true",
     logoFile,
   };

@@ -51,6 +51,7 @@ export type Vendor = {
   website_url: string;
   location: string;
   logo_path: string | null;
+  is_mature: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -62,5 +63,6 @@ export type VendorInput = {
   website_url?: string;
   location?: string;
   logo_path?: string | null;
+  is_mature?: boolean;
   remove_logo?: boolean;
 };

@@ -52,6 +52,7 @@ function initializeSchema(database: Database.Database) {
       website_url TEXT NOT NULL DEFAULT '',
       location TEXT NOT NULL DEFAULT '',
       logo_path TEXT,
+      is_mature INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -74,6 +75,19 @@ function initializeSchema(database: Database.Database) {
 
   for (const [name, sql] of Object.entries(migrations)) {
     if (!columnNames.has(name)) {
+      database.exec(sql);
+    }
+  }
+
+  const vendorColumns = database.prepare("PRAGMA table_info(vendors)").all() as { name: string }[];
+  const vendorColumnNames = new Set(vendorColumns.map((col) => col.name));
+
+  const vendorMigrations: Record<string, string> = {
+    is_mature: "ALTER TABLE vendors ADD COLUMN is_mature INTEGER NOT NULL DEFAULT 0",
+  };
+
+  for (const [name, sql] of Object.entries(vendorMigrations)) {
+    if (!vendorColumnNames.has(name)) {
       database.exec(sql);
     }
   }

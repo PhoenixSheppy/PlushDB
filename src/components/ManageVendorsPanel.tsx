@@ -17,6 +17,7 @@ function buildFormData(data: VendorFormData, id?: number): FormData {
   formData.set("description", data.description);
   formData.set("website_url", data.website_url);
   formData.set("location", data.location);
+  formData.set("is_mature", String(data.is_mature));
   formData.set("remove_logo", String(data.remove_logo));
   if (data.logo) formData.set("logo", data.logo);
   if (id) formData.set("id", String(id));
@@ -72,6 +73,8 @@ export function ManageVendorsPanel({ initialVendors }: Props) {
   }
 
   const formVisible = showForm || editing;
+  const trustedVendors = vendors.filter((vendor) => !vendor.is_mature);
+  const matureVendors = vendors.filter((vendor) => vendor.is_mature);
 
   return (
     <div className="space-y-8">
@@ -103,16 +106,43 @@ export function ManageVendorsPanel({ initialVendors }: Props) {
       )}
 
       {vendors.length > 0 ? (
-        <VendorList
-          vendors={vendors}
-          showAdmin
-          onEdit={(v) => {
-            setShowForm(false);
-            setEditing(v);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          onDelete={handleDelete}
-        />
+        <div className="space-y-10">
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold">Trusted vendors</h2>
+            {trustedVendors.length > 0 ? (
+              <VendorList
+                vendors={trustedVendors}
+                showAdmin
+                onEdit={(v) => {
+                  setShowForm(false);
+                  setEditing(v);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onDelete={handleDelete}
+              />
+            ) : (
+              <div className="glass rounded-2xl p-8 text-center text-text-muted">
+                No trusted vendors yet.
+              </div>
+            )}
+          </section>
+
+          {matureVendors.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">Modders</h2>
+              <VendorList
+                vendors={matureVendors}
+                showAdmin
+                onEdit={(v) => {
+                  setShowForm(false);
+                  setEditing(v);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onDelete={handleDelete}
+              />
+            </section>
+          )}
+        </div>
       ) : (
         !formVisible && (
           <div className="glass rounded-2xl p-8 text-center text-text-muted">

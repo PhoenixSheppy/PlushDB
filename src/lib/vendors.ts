@@ -10,6 +10,7 @@ type VendorRow = {
   website_url: string;
   location: string;
   logo_path: string | null;
+  is_mature: number;
   created_at: string;
   updated_at: string;
 };
@@ -18,6 +19,7 @@ function rowToVendor(row: VendorRow): Vendor {
   return {
     ...row,
     logo_path: row.logo_path ?? null,
+    is_mature: Boolean(row.is_mature),
   };
 }
 
@@ -39,8 +41,8 @@ export function createVendor(input: VendorInput): Vendor {
   const db = getDb();
   const result = db
     .prepare(
-      `INSERT INTO vendors (name, short_description, description, website_url, location, logo_path, updated_at)
-       VALUES (@name, @short_description, @description, @website_url, @location, @logo_path, datetime('now'))`
+      `INSERT INTO vendors (name, short_description, description, website_url, location, logo_path, is_mature, updated_at)
+       VALUES (@name, @short_description, @description, @website_url, @location, @logo_path, @is_mature, datetime('now'))`
     )
     .run({
       name: input.name.trim(),
@@ -49,6 +51,7 @@ export function createVendor(input: VendorInput): Vendor {
       website_url: input.website_url?.trim() ?? "",
       location: input.location?.trim() ?? "",
       logo_path: input.logo_path ?? null,
+      is_mature: input.is_mature ? 1 : 0,
     });
 
   return getVendorById(Number(result.lastInsertRowid))!;
@@ -80,6 +83,7 @@ export function updateVendor(id: number, input: VendorInput): Vendor | null {
            website_url = @website_url,
            location = @location,
            logo_path = @logo_path,
+           is_mature = @is_mature,
            updated_at = datetime('now')
        WHERE id = @id`
     )
@@ -91,6 +95,8 @@ export function updateVendor(id: number, input: VendorInput): Vendor | null {
       website_url: input.website_url?.trim() ?? "",
       location: input.location?.trim() ?? "",
       logo_path: logoPath,
+      is_mature:
+        input.is_mature !== undefined ? (input.is_mature ? 1 : 0) : existing.is_mature ? 1 : 0,
     });
 
   if (result.changes === 0) return null;

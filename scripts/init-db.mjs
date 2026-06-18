@@ -52,6 +52,7 @@ db.exec(`
     website_url TEXT NOT NULL DEFAULT '',
     location TEXT NOT NULL DEFAULT '',
     logo_path TEXT,
+    is_mature INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
@@ -74,6 +75,19 @@ const migrations = {
 
 for (const [name, sql] of Object.entries(migrations)) {
   if (!columnNames.has(name)) {
+    db.exec(sql);
+  }
+}
+
+const vendorColumns = db.prepare("PRAGMA table_info(vendors)").all();
+const vendorColumnNames = new Set(vendorColumns.map((col) => col.name));
+
+const vendorMigrations = {
+  is_mature: "ALTER TABLE vendors ADD COLUMN is_mature INTEGER NOT NULL DEFAULT 0",
+};
+
+for (const [name, sql] of Object.entries(vendorMigrations)) {
+  if (!vendorColumnNames.has(name)) {
     db.exec(sql);
   }
 }
