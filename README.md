@@ -2,7 +2,11 @@
 
 A cozy catalog for your plushie collection. Built with Next.js, Tailwind CSS, TypeScript, and SQLite.
 
-![PlushDB gallery demo](https://raw.githubusercontent.com/PhoenixSheppy/PlushDB/main/github_media/demo.png)
+## Demo
+
+<p align="center">
+  <img src="github_media/demo.png" alt="PlushDB gallery demo" width="900" />
+</p>
 
 ## Features
 
