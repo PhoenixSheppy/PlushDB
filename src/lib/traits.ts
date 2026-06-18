@@ -19,6 +19,21 @@ export const FAVORITE_TRAIT = {
   iconInactive: faHeartOutline,
 };
 
+export const WELL_LOVED_TRAIT = {
+  label: "Well Loved",
+  icon: faDroplet,
+};
+
+export const MODDED_TRAIT = {
+  label: "Modded",
+  icon: faStarOfLife,
+};
+
+export const PADDED_TRAIT = {
+  label: "Padded",
+  icon: faBaby,
+};
+
 export const BOOLEAN_TRAITS = [
   { key: "is_imported" as const, icon: faGlobe, label: "Imported" },
   { key: "is_travel_buddy" as const, icon: faPlane, label: "Travel Buddy" },

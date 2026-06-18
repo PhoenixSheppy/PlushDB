@@ -10,6 +10,11 @@ import {
 } from "react";
 
 const STORAGE_KEY = "plushbroker-mature-content";
+const VERIFIED_KEY = "plushbroker-mature-verified";
+
+function isAgeVerified(): boolean {
+  return window.localStorage.getItem(VERIFIED_KEY) === "true";
+}
 
 type MatureContentContextValue = {
   matureEnabled: boolean;
@@ -46,14 +51,19 @@ export function MatureContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const requestEnable = useCallback(() => {
+    if (isAgeVerified()) {
+      persist(true);
+      return;
+    }
     setConfirmOpen(true);
-  }, []);
+  }, [persist]);
 
   const disable = useCallback(() => {
     persist(false);
   }, [persist]);
 
   const confirmEnable = useCallback(() => {
+    window.localStorage.setItem(VERIFIED_KEY, "true");
     persist(true);
     setConfirmOpen(false);
   }, [persist]);

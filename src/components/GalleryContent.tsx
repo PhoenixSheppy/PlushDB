@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FAVORITE_TRAIT } from "@/lib/traits";
+import { useMatureContent } from "@/components/MatureContentProvider";
 import { parsePlushieId } from "@/lib/plushie-url";
 import type { Plushie } from "@/types";
 import { CollectionStats } from "./CollectionStats";
@@ -22,8 +23,12 @@ export function GalleryContent({ plushies, count, loggedIn }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<Plushie | null>(null);
+  const { matureEnabled } = useMatureContent();
 
   const favorites = plushies.filter((p) => p.is_favorite);
+  const wellLoved = plushies.filter((p) => p.has_stickies);
+  const modded = plushies.filter((p) => p.is_modded);
+  const padded = plushies.filter((p) => p.is_padded);
   const nonFavorites = plushies.filter((p) => !p.is_favorite);
 
   useEffect(() => {
@@ -56,7 +61,14 @@ export function GalleryContent({ plushies, count, loggedIn }: Props) {
             A cozy little collection of my soft friends — their names, a little about them, and a
             picture all in one place.
           </p>
-          <CollectionStats total={count} favorites={favorites.length} />
+          <CollectionStats
+            total={count}
+            favorites={favorites.length}
+            wellLoved={wellLoved.length}
+            modded={modded.length}
+            padded={padded.length}
+            showMatureStats={matureEnabled}
+          />
           {loggedIn && (
             <Link
               href="/manage"
