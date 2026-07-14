@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Plushie } from "@/types";
+import { formatDate } from "@/lib/format";
 import { getPlushieSharePath } from "@/lib/plushie-url";
 import { getSiteOrigin } from "@/lib/site-url";
 
@@ -7,13 +8,24 @@ const DEFAULT_TITLE = "PlushBroker — A Collection of Plushies";
 const DEFAULT_DESCRIPTION = "A cozy collection of plushie friends";
 
 export function buildPlushieEmbedDescription(plushie: Plushie): string {
-  const bits = [plushie.species, plushie.manufacturer].filter(Boolean);
-  const header = bits.length > 0 ? bits.join(" · ") : "A plushie in the PlushBroker collection";
+  const acquired = formatDate(plushie.acquired_date);
+  const bits = [
+    plushie.species,
+    plushie.manufacturer,
+    acquired ? `Acquired: ${acquired}` : "",
+  ].filter(Boolean);
+  const header = bits.length > 0 ? bits.join(" · ") : "";
   const body = plushie.description.trim();
-  if (!body) return header;
 
-  const combined = `${header} — ${body}`;
-  return combined.length > 280 ? `${combined.slice(0, 277)}…` : combined;
+  let text: string;
+  if (header && body) {
+    // Discord / Telegram preserve newlines in OG descriptions (not rich markdown).
+    text = `${header}\n\n${body}`;
+  } else {
+    text = header || body || "A plushie in the PlushBroker collection";
+  }
+
+  return text.length > 280 ? `${text.slice(0, 277)}…` : text;
 }
 
 export async function buildPlushieMetadata(plushie: Plushie | null): Promise<Metadata> {
@@ -47,6 +59,8 @@ export async function buildPlushieMetadata(plushie: Plushie | null): Promise<Met
             images: [
               {
                 url: imageUrl,
+                width: 400,
+                height: 400,
                 alt: plushie.name,
               },
             ],
@@ -54,7 +68,8 @@ export async function buildPlushieMetadata(plushie: Plushie | null): Promise<Met
         : {}),
     },
     twitter: {
-      card: imageUrl ? "summary_large_image" : "summary",
+      // `summary` = small square thumbnail on the left (Discord, Telegram, etc.)
+      card: "summary",
       title,
       description,
       ...(imageUrl ? { images: [imageUrl] } : {}),
