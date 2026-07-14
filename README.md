@@ -12,7 +12,7 @@ A cozy catalog for your plushie collection. Built with Next.js, Tailwind CSS, Ty
 
 - **Public gallery** — browse the collection with favorites highlighted, collection stats, and detail modals for each plushie
 - **Vendor directory** — showcase trusted shops and makers on a dedicated `/vendors` page
-- **Share links** — share any plushie via a direct URL; native share on mobile, copy-to-clipboard on desktop
+- **Share links** — share any plushie via a direct URL with Open Graph embeds for Discord, Telegram, and similar apps; native share on mobile, copy-to-clipboard on desktop
 - **Manage panel** — add, edit, and delete plushies and vendors (login required)
 - **Plushie fields** — name, photo, species, description, manufacturer, date acquired, gender, and trait badges (favorite, imported, travel buddy, well loved, modded, padded)
 - **Vendor fields** — name, logo, short description, full description, website, and location
@@ -52,6 +52,7 @@ Default credentials (change via `.env` before `db:init`):
 | `ADMIN_USERNAME` | Admin login username (used during `db:init`) |
 | `ADMIN_PASSWORD` | Admin login password (used during `db:init`) |
 | `SESSION_SECRET` | Secret for session cookies (32+ chars, required in production) |
+| `SITE_URL` | Public site URL (e.g. `https://plush.example.com`) used for Discord/Telegram share embeds |
 
 ## Scripts
 
@@ -103,6 +104,7 @@ PlushDB ships with a production `Dockerfile` using Next.js standalone output. SQ
 | `SESSION_SECRET` | Long random string, 32+ characters |
 | `ADMIN_PASSWORD` | Login password — set before first deploy |
 | `ADMIN_USERNAME` | Optional, defaults to `admin` |
+| `SITE_URL` | Optional but recommended — your public HTTPS URL (e.g. `https://plush.example.com`) so share embeds show the correct image/link |
 
 On first start the container runs database initialization automatically and creates the admin account. If the volume already has a database, it skips init.
 
